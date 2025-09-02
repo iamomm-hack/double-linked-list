@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct dill{
+    int data;
+    struct dill *next, *prev;
+} node;
+
+node *head = NULL, *tail = NULL;
+
+void insertFront(int val){
+    node *tmp=(node *)malloc(sizeof(node));
+    tmp->data=val;
+    tmp->next=head;
+    tmp->prev=NULL;
+
+    if (head==NULL) {
+        head=tail=tmp;
+    } else {
+        head->prev=tmp;
+        head=tmp;
+    }
+    printf("%d inserted at front\n", val);
+}
+
+void insertEnd(int val){
+    node *tmp=(node *)malloc(sizeof(node));
+    tmp->data=val;
+    tmp->next=NULL;
+    tmp->prev=tail;
+
+    if (tail==NULL){
+        head=tail=tmp;
+    } else{
+        tail->next=tmp;
+        tail=tmp;
+    }
+    printf("%d inserted at end\n", val);
+}
+
+void deleteFront(){
+    if (head==NULL){
+        printf("list is empty\n");
+        return;
+    }
+    node *tmp=head;
+    if (head==tail){
+        head=tail=NULL;
+    } else {
+        head=head->next;
+        head->prev=NULL;
+    }
+    printf("%d deleted from front \n", tmp->data);
+    free(tmp);
+}
+
+void deleteEnd(){
+    if (tail==NULL){
+        printf("list is empty\n");
+        return;
+    }
+    node *tmp=tail;
+    if (head==tail){
+        head=tail=NULL;
+    } else {
+        tail=tail->prev;
+        tail->next=NULL;
+    }
+    printf("%d deleted from end\n", tmp->data);
+    free(tmp);
+}
+
+void forwardDisplay(){
+    if (head==NULL) {
+        printf("list is empty.\n");
+        return;
+    }
+    node *tmp=head;
+    printf("list (Forward)= ");
+    while (tmp !=NULL) {
+        printf("%d ", tmp->data);
+        tmp=tmp->next;
+    }
+    printf("\n");
+}
+
+void backwardDisplay(){
+    if (tail==NULL){
+        printf("list is empty.\n");
+        return;
+    }
+    node *tmp=tail;
+    printf("list (Backward)= ");
+    while (tmp != NULL) {
+        printf("%d ", tmp->data);
+        tmp=tmp->prev;
+    }
+    printf("\n");
+}
+
+int main(){
+    int choice,val;
+
+    while (1) {
+        printf("double linked list menu\n");
+        printf("insert at front\n") ;
+        printf("insert at end\n");
+        printf("delete from front\n") ;
+        printf ("delete from end\n");
+        printf("display forward\n");
+        printf ("display backward\n");
+        printf ("Exit\n");
+        printf("Enter your choice= ");
+        scanf("%d", &choice);
+
+        switch (choice){
+            case 1:
+                printf("Enter value= ");
+                scanf("%d", &val);
+                insertFront(val);
+                break;
+            case 2:
+                printf("Enter value= ");
+                scanf("%d", &val);
+                insertEnd(val);
+                break;
+            case 3:
+                deleteFront();
+                break;
+            case 4:
+                deleteEnd();
+                break;
+            case 5:
+                forwardDisplay();
+                break;
+            case 6:
+                backwardDisplay();
+                break;
+            case 7:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("wrong choice, please try again.\n");
+        }
+    }
+    return 0;
+}
