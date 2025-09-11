@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <math.h>
+
+double f(double x, double y) {
+    return x + y;
+}
+void euler(double x0, double y0, double xn, double h) {
+    if (h <= 0.0) {
+        printf("Step size h must be positive.\n");
+        return;
+    }
+    if (xn < x0) {
+        printf("Final x (xn) must be >= initial x (x0).\n");
+        return;
+    }
+
+    double x = x0;
+    double y = y0;
+
+    int steps = (int) ((xn - x0) / h);
+
+    printf("Step: x = %.4lf, y = %.4lf\n", x, y);
+
+    for (int i = 0; i < steps; ++i) {
+        y = y + h * f(x, y);   /* Euler forward step */
+        x = x + h;
+        printf("Step %2d: x = %.4lf, y = %.4lf\n", i+1, x, y);
+    }
+    double remainder = xn - x;
+    if (remainder > 1e-14) {
+        double h_last = remainder;
+        y = y + h_last * f(x, y);
+        x = xn;
+        printf("Final small step: x = %.4lf, y = %.4lf\n", x, y);
+    }
+
+    printf("\nApproximate solution at x = %.4lf is y = %.4lf\n", x, y);
+}
+
+int main(void) {
+    double x0, y0, xn, h;
+
+    printf("Enter initial x (x0): ");
+    if (scanf("%lf", &x0) != 1) return 1;
+
+    printf("Enter initial y (y0): ");
+    if (scanf("%lf", &y0) != 1) return 1;
+
+    printf("Enter final x (xn): ");
+    if (scanf("%lf", &xn) != 1) return 1;
+
+    printf("Enter step size (h): ");
+    if (scanf("%lf", &h) != 1) return 1;
+
+    euler(x0, y0, xn, h);
+
+    return 0;
+}
